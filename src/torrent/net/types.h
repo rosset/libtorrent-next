@@ -3,7 +3,9 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 #include <tuple>
+#include <utility>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <torrent/system/common.h>
@@ -84,6 +86,7 @@ using proxy_ptr = std::unique_ptr<proxy::Proxy>;
 // TODO: Rename sa_lookup_address.
 
 c_sa_shared_ptr                sa_lookup_address(const std::string& address_str, int family) LIBTORRENT_EXPORT;
+std::pair<c_sa_shared_ptr, std::string> sa_lookup_address_with_device_name(const std::string& address_str, int family) LIBTORRENT_EXPORT;
 std::tuple<sa_unique_ptr,bool> sa_lookup_numeric(const std::string& address_str, int family) LIBTORRENT_EXPORT;
 
 sin46_shared_pair   try_lookup_numeric(const std::string& hostname, int family) LIBTORRENT_EXPORT;

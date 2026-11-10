@@ -801,6 +801,21 @@ sa_lookup_address(const std::string& address_str, int family) {
   }
 }
 
+std::pair<c_sa_shared_ptr, std::string>
+sa_lookup_address_with_device_name(const std::string& address_str, int family) {
+  auto split = address_str.find('%');
+
+  auto sa = sa_lookup_address(address_str, family);
+
+  if (split == std::string::npos)
+    return {sa, ""};
+
+  if (split == address_str.size() - 1)
+    throw input_error("Invalid address string, device name is empty");
+
+  return {sa, address_str.substr(split + 1)};
+}
+
 // Returns ptr if numeric of family, if numeric of other family return nullptr+false, else nullptr+true.
 
 std::tuple<sa_unique_ptr,bool>

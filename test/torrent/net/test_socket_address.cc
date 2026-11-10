@@ -439,3 +439,19 @@ test_socket_address::test_sa_to_v4mapped() {
   CPPUNIT_ASSERT_THROW(torrent::sap_to_v4mapped(sin6_v4_bc), torrent::internal_error);
   CPPUNIT_ASSERT_THROW(torrent::sap_to_v4mapped(sin6_v4_1), torrent::internal_error);
 }
+
+void
+test_socket_address::test_sa_lookup_address_with_device_name() {
+  auto [sa, device] = torrent::sa_lookup_address_with_device_name("fe80::1%1", AF_INET6);
+  CPPUNIT_ASSERT(torrent::sa_is_inet6(sa.get()));
+  CPPUNIT_ASSERT(reinterpret_cast<const sockaddr_in6*>(sa.get())->sin6_scope_id == 1);
+  CPPUNIT_ASSERT(device == "1");
+
+  auto [sa2, device2] = torrent::sa_lookup_address_with_device_name("2001:db8::1", AF_UNSPEC);
+  CPPUNIT_ASSERT(torrent::sa_is_inet6(sa2.get()));
+  CPPUNIT_ASSERT(device2 == "");
+
+  CPPUNIT_ASSERT_THROW(
+    torrent::sa_lookup_address_with_device_name("fe80::1%", AF_INET6),
+    torrent::input_error);
+}

@@ -21,6 +21,8 @@ class test_socket_address : public CppUnit::TestFixture {
   CPPUNIT_TEST(test_sa_from_v4mapped);
   CPPUNIT_TEST(test_sa_to_v4mapped);
 
+  CPPUNIT_TEST(test_sa_lookup_address_with_device_name);
+
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -41,4 +43,6 @@ public:
 
   void test_sa_from_v4mapped();
   void test_sa_to_v4mapped();
+
+  void test_sa_lookup_address_with_device_name();
 };
